@@ -3,46 +3,41 @@ package io.swagger.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import springfox.documentation.service.Contact;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.service.ApiInfo;
+import org.springdoc.core.GroupedOpenApi;
 import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.servers.Server;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-07-01T19:17:39.704Z[GMT]")
+@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-06-26T11:47:57.236Z[GMT]")
 @Configuration
 public class SwaggerDocumentationConfig {
 
     @Bean
-    public Docket customImplementation(){
-        return new Docket(DocumentationType.OAS_30)
-                .select()
-                    .apis(RequestHandlerSelectors.basePackage("io.swagger.api"))
-                    .build()
-                .directModelSubstitute(org.threeten.bp.LocalDate.class, java.sql.Date.class)
-                .directModelSubstitute(org.threeten.bp.OffsetDateTime.class, java.util.Date.class)
-                .apiInfo(apiInfo());
+    public GroupedOpenApi customImplementation(){
+    	return GroupedOpenApi.builder()
+                .group("Fund Transfer API")
+                .pathsToMatch("/v1/**")
+                .build();
     }
 
-    ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
+    Info apiInfo() {
+        return new Info()
             .title("EKO APIs")
             .description("Easy salary disbursal and vendor payments")
-            .license("")
-            .licenseUrl("http://unlicense.org")
-            .termsOfServiceUrl("")
+            .termsOfService("")
             .version("1.0.0")
-            .contact(new Contact("","", ""))
-            .build();
+            .contact(new Contact());
+            
     }
 
     @Bean
     public OpenAPI openApi() {
         return new OpenAPI()
+        		.addServersItem(new Server()
+        				.url("http://localhost:8081")
+        				.description("TEST Server"))
             .info(new Info()
                 .title("EKO APIs")
                 .description("Easy salary disbursal and vendor payments")
